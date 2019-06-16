@@ -1,0 +1,5 @@
+port: /dev/serial
+baud: 115200
+to: 
+  - 123456789
+min_severity: alert

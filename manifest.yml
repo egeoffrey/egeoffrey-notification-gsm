@@ -1,0 +1,8 @@
+package: myhouse-notification-gsm
+revision: 1
+version: development
+git: myhouse-project/myhouse-notification-gsm
+modules:
+  - notification/gsm_call
+  - notification/gsm_sms
+
