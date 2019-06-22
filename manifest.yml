@@ -2,7 +2,7 @@ package: myhouse-notification-gsm
 revision: 2
 version: development
 github: myhouse-project/myhouse-notification-gsm
-dockerhub: myhouse-project/myhouse-notification-gsm
+dockerhub: myhouseproject/myhouse-notification-gsm
 container_config:
   devices:
     - "/dev/ttyAMA0:/dev/ttyAMA0"
