@@ -1,5 +1,6 @@
+manifest_schema: 1
 package: myhouse-notification-gsm
-revision: 2
+revision: 3
 version: development
 github: myhouse-project/myhouse-notification-gsm
 dockerhub: myhouseproject/myhouse-notification-gsm
@@ -9,6 +10,8 @@ container_config:
 description: Send a sms or make a phone call through an attached serial device
 tags: notification sms serial voice
 modules:
-  - notification/gsm_call
-  - notification/gsm_sms
+  - notification/gsm_call:
+      description: Make a phone call through an attached serial device (just a few rings)
+  - notification/gsm_sms:
+      description: Send a sms through an attached serial device
 
