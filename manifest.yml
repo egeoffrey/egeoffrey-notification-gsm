@@ -5,6 +5,7 @@ container_config:
 description: Send a sms or make a phone call through an attached serial device
 dockerhub: myhouseproject/myhouse-notification-gsm
 github: myhouse-project/myhouse-notification-gsm
+icon: mobile-alt
 manifest_schema: 2
 modules:
 - notification/gsm_call:
@@ -12,6 +13,6 @@ modules:
 - notification/gsm_sms:
     description: Send a sms through an attached serial device
 package: myhouse-notification-gsm
-revision: 4
+revision: 5
 tags: notification sms serial voice
 version: 1.0
