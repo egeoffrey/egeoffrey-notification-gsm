@@ -3,8 +3,8 @@ container_config:
   devices:
   - /dev/ttyAMA0:/dev/ttyAMA0
 description: Send a sms or make a phone call through an attached serial device
-dockerhub: myhouseproject/myhouse-notification-gsm
-github: myhouse-project/myhouse-notification-gsm
+dockerhub: egeoffrey/egeoffrey-notification-gsm
+github: egeoffrey/egeoffrey-notification-gsm
 icon: mobile-alt
 manifest_schema: 2
 modules:
@@ -12,7 +12,7 @@ modules:
     description: Make a phone call through an attached serial device (just a few rings)
 - notification/gsm_sms:
     description: Send a sms through an attached serial device
-package: myhouse-notification-gsm
-revision: 5
+package: egeoffrey-notification-gsm
+revision: 6
 tags: notification sms serial voice
 version: 1.0
