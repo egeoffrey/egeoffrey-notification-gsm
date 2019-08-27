@@ -10,9 +10,41 @@ manifest_schema: 2
 modules:
 - notification/gsm_call:
     description: Make a phone call through an attached serial device (just a few rings)
+    module_configuration:
+    - description: The serial port the modem device is attached to
+      format: string
+      name: port
+      placeholder: /dev/gsm
+      required: true
+    - description: The baud rate to use for communicating with the device
+      format: int
+      name: baud
+      placeholder: 115200
+      required: true
+    - description: Recipient phone number(s), comma separated
+      format: string
+      name: to
+      placeholder: 112341231232
+      required: true
 - notification/gsm_sms:
     description: Send a sms through an attached serial device
+    module_configuration:
+    - description: The serial port the modem device is attached to
+      format: string
+      name: port
+      placeholder: /dev/gsm
+      required: true
+    - description: The baud rate to use for communicating with the device
+      format: int
+      name: baud
+      placeholder: 115200
+      required: true
+    - description: Recipient phone number(s), comma separated
+      format: string
+      name: to
+      placeholder: 112341231232
+      required: true
 package: egeoffrey-notification-gsm
-revision: 6
+revision: 7
 tags: notification sms serial voice
 version: 1.0

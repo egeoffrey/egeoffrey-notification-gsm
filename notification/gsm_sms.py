@@ -67,7 +67,7 @@ class Gsm_sms(Notification):
             self.log_error("Unable to connect to the GSM modem: "+exception.get(e))
             return
         # for each recipient
-        for to in self.config["to"]:
+        for to in self.config["to"].split(","):
             try: 
                 i = self.timeout
                 done = False
