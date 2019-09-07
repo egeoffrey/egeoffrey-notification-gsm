@@ -11,6 +11,9 @@
 # - NOTIFY: receive a notification request
 # OUTBOUND: 
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 import serial
 from curses import ascii
 
