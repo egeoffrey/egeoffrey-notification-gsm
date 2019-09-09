@@ -25,7 +25,7 @@ class Gsm_sms(Notification):
     # What to do when initializing
     def on_init(self):
         # constants
-        self.timeout = 30
+        self.timeout = 15
         # configuration settings
         self.house = {}
         # require configuration before starting up
@@ -40,22 +40,27 @@ class Gsm_sms(Notification):
     # What to do when shutting down
     def on_stop(self):
         pass
+        
+    # send a command to the modem and parse the response
+    def modem_write(self, modem, command, sleep=2):
+        # send command to the modem
+        self.log_debug("Modem write: "+str(command).rstrip())
+        modem.write(command)
+        # wait for a response
+        self.sleep(sleep)
+        output = modem.readlines()
+        for line in output:
+                line = str(line).rstrip()
+                if line == "": continue
+                self.log_debug("Modem read: "+line)
+                if "+CMGS:" in line:
+                    self.log_info("Sent SMS to "+str(to)+" with text: "+text)
+                    return True
+                if "ERROR" in line:
+                    self.log_info("Error while sending message: "+line)
+                    return True
+        return False
 
-    # send a sms message
-    def send_sms(self, modem, to, text):
-        self.log_debug("Sending SMS "+str(to))
-        self.sleep(2)
-        # switch to text mode
-        modem.write(b'AT+CMGF=1\r')
-        self.sleep(2)
-        # set the recipient number
-        modem.write(b'AT+CMGS="' + str(to).encode() + b'"\r')
-        self.sleep(2)
-        # send the message
-        modem.write(text.encode())
-        self.sleep(1)
-        # end the message with ctrl+z
-        modem.write(ascii.ctrl('z'))
         
    # What to do when ask to notify
     def on_notify(self, severity, text):
@@ -65,7 +70,7 @@ class Gsm_sms(Notification):
         # connect to the modem
         try:
             self.log_debug("Connecting to GSM modem on port "+self.config["port"]+" with baud rate "+str(self.config["baud"]))
-            modem = serial.Serial(self.config["port"], self.config["baud"], timeout=0.5)
+            modem = serial.Serial(self.config["port"], self.config["baud"], timeout=5)
         except Exception,e:
             self.log_error("Unable to connect to the GSM modem: "+exception.get(e))
             return
@@ -73,28 +78,27 @@ class Gsm_sms(Notification):
         for to in self.config["to"].split(","):
             try: 
                 i = self.timeout
-                done = False
                 while True:
                     # send the sms
-                    if i == 30: self.send_sms(modem, to, text)
-                    # read the output
-                    output = modem.readlines()
-                    for line in output:
-                        line = str(line).rstrip()
-                        if line == "": continue
-                        self.log_debug("Modem output: "+line)
-                        if "+CMGS:" in line:
-                            self.log_info("Sent SMS to "+str(to)+" with text: "+text)
-                            done = True
-                        if "ERROR" in line:
-                            done = True
-                            break
-                    if done: break
+                    if i == self.timeout: 
+                        self.log_debug("Sending SMS "+str(to))
+                        self.sleep(2)
+                        # enable radio
+                        if self.modem_write(modem, b'AT +CFUN=1\r', 10): break
+                        # switch to text mode
+                        if self.modem_write(modem, b'AT+CMGF=1\r'): break
+                        # set the recipient number
+                        if self.modem_write(modem, b'AT+CMGS="' + str(to).encode() + b'"\r'): break
+                        # send the message
+                        if self.modem_write(modem, text.encode()): break
+                        # end the message with ctrl+z
+                        if self.modem_write(modem, ascii.ctrl('z')): break
                     i = i - 1
                     if i == 0:
                         # timeout reached
                         self.log_error("Unable to send SMS to "+str(to)+": timeout reached")
                         break
+                    self.sleep(1)
             except Exception,e:
                 self.log_error("Failed to send SMS to "+str(to)+": "+exception.get(e))
         # disconect
