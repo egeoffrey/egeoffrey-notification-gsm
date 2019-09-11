@@ -54,7 +54,7 @@ class Gsm_sms(Notification):
                 if line == "": continue
                 self.log_debug("Modem read: "+line)
                 if "+CMGS:" in line:
-                    self.log_info("Sent SMS to "+str(to)+" with text: "+text)
+                    self.log_info("SMS sent successfully")
                     return True
                 if "ERROR" in line:
                     self.log_info("Error while sending message: "+line)
