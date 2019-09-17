@@ -45,6 +45,6 @@ modules:
       placeholder: 112341231232
       required: true
 package: egeoffrey-notification-gsm
-revision: 11
+revision: 12
 tags: notification sms serial voice
 version: 1.0
